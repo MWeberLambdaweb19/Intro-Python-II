@@ -81,11 +81,14 @@ while True:
         # print(thing)
         # print(type(thing))
         player.take_item(items[thing])
-        print(room[player.current_room])
+        # print(room[player.current_room])
         # index = room_items.index(thing)
         # print(index)
         # print(player.current_room.current_items)
         # player.current_room.current_items.remove(str(thing))
+    elif direction == 'd':
+        thing = cmd[2:]
+        player.drop_item(thing)
     elif direction == "q":
         exit()
     else: 

@@ -18,8 +18,10 @@ class Player:
     def inventory(self):
         if self.current_inventory is []:
             print("I have nothing in my inventory")
-        else: 
-            print(self.inventory)
+        else:
+            print('my inventory is'), 
+            for x in self.current_inventory:
+                print(x)
 
     def search(self):
         current_room = self.current_room
@@ -34,6 +36,12 @@ class Player:
 
     def take_item(self, item):
         self.current_inventory = []
-        self.current_inventory.append(item)
-        print(f"I have taken {item}. My inventory is now: {self.current_inventory}")
-        
+        if item not in self.current_room.current_items:
+            print("That item is not in this room!")
+        else:
+            self.current_inventory.append(item)
+            print(f"I have taken {item}. My inventory is now: {self.current_inventory}")
+    
+    def drop_item(self, item):
+        self.current_inventory.pop()
+        print(f"I have dropped {item}. My inventory is now: {self.current_inventory}")
