@@ -1,6 +1,12 @@
-from room import Room
-
+from room import Room, Treasure
+from player import Player
+from item import Item
 # Declare all the rooms
+
+items = {
+    'rock': Item('rock', 'its a rock'),
+    'stone': Item('stone', 'its a stone')
+}
 
 room = {
     'outside':  Room("Outside Cave Entrance",
@@ -16,9 +22,9 @@ the distance, but there is no way across the chasm."""),
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air."""),
 
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
+    'treasure': Treasure("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""", items),
 }
 
 
@@ -32,6 +38,10 @@ room['overlook'].s_to = room['foyer']
 room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
+
+# Putting items in rooms
+room['outside'].current_items = [items['rock'], items['stone']]
+# room['outside'].add_items(items['rock'], items['stone'])
 
 #
 # Main
@@ -49,3 +59,39 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+player = Player(input('What is your name? '), room['outside'])
+
+print(f'Hello {player.name} \n')
+print(f'{player.current_room}')
+
+while True: 
+    cmd = input(">>").lower()
+    direction = cmd[0]
+
+    if direction in ["n", "s", "e", "w"]:
+        player.travel(direction)
+    elif direction == "i":
+        player.inventory()
+    elif direction == 'f':
+        player.search()
+    elif direction == 't':
+        thing = cmd[2:]
+        room_items = player.current_room.current_items
+        # print(thing)
+        # print(type(thing))
+        player.take_item(items[thing])
+        # print(room[player.current_room])
+        # index = room_items.index(thing)
+        # print(index)
+        # print(player.current_room.current_items)
+        # player.current_room.current_items.remove(str(thing))
+    elif direction == 'd':
+        thing = cmd[2:]
+        player.drop_item(thing)
+    elif direction == "q":
+        exit()
+    else: 
+        print("I did not understand")
+
+    
